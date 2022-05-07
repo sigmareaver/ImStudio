@@ -713,7 +713,7 @@ void ImStudio::ContainerChild::drawall(int *select, bool staticlayout)
 
     if (!grabinit)
     {
-        srand(time(NULL));
+        srand(static_cast<unsigned int>(time(NULL)));
         grab1_id = rand() % 100;
         grab2_id = grab1_id + 1;
     }

@@ -24,3 +24,6 @@ build/
 web/
 .vscode/
 cmake/wixpatch.xml
+Debug/
+Release/
+vcpkg_installed/

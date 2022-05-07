@@ -64,8 +64,8 @@ void MainWindowGUI(ImStudio::GUI & gui_r)
     ImStudio::GUI &gui = gui_r;
     ImGuiIO &io = ImGui::GetIO();
 
-    static int w_w = io.DisplaySize.x;
-    static int w_h = io.DisplaySize.y;
+    static float w_w = io.DisplaySize.x;
+    static float w_h = io.DisplaySize.y;
     //////////////////////////////////
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));

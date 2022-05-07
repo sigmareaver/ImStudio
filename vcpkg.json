@@ -1,0 +1,9 @@
+{
+  "name": "imstudio",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "fmt",
+    "freetype",
+    "glfw3"
+  ]
+}

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "imgui.h"
+#include "imgui_docking/imgui.h"
 #include "fmt/format.h"
 
 #include "ims_object.h"

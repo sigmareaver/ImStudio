@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "imgui.h"
+#include "imgui_docking/imgui.h"
 
-#include "ims_object.h"
+#include "sources/ims_object.h"
 
 namespace ImStudio
 {

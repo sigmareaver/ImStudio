@@ -2,12 +2,12 @@
 
 #include <string>
 
-#include "imgui.h"
+#include "imgui_docking/imgui.h"
 
-#include "ims_utils.h"
-#include "ims_object.h"
-#include "ims_buffer.h"
-#include "ims_generator.h"
+#include "utils/ims_utils.h"
+#include "sources/ims_object.h"
+#include "sources/ims_buffer.h"
+#include "sources/ims_generator.h"
 
 #ifdef __EMSCRIPTEN__
 #include "JsClipboardTricks.h"

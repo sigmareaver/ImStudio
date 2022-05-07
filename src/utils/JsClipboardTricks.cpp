@@ -23,7 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "imgui.h"
+#include "imgui_docking/imgui.h"
 #include "JsClipboardTricks.h"
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

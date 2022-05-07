@@ -1,7 +1,7 @@
 #include <GLFW/glfw3.h>
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "imgui_docking/imgui.h"
+#include "imgui_docking/backends/imgui_impl_glfw.h"
+#include "imgui_docking/backends/imgui_impl_opengl3.h"
 
 #include "main_window.h"
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         int display_w, display_h;
         glfwGetFramebufferSize(glwindow, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        static ImVec4 bg = ImVec4(0.123f, 0.123f, 0.123, 1.00f);
+        static ImVec4 bg = ImVec4(0.123f, 0.123f, 0.123f, 1.00f);
         glClearColor(bg.x * bg.w, bg.y * bg.w, bg.z * bg.w, bg.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

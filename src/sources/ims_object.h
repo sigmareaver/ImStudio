@@ -5,11 +5,11 @@
 #include <string>
 #include <vector>
 
-#include "imgui.h"
-#include "imgui_stdlib.h"
-#include "imgui_internal.h"
+#include "imgui_docking/imgui.h"
+#include "imgui_docking/imgui_stdlib.h"
+#include "imgui_docking/imgui_internal.h"
 
-#include "ims_utils.h"
+#include "utils/ims_utils.h"
 
 namespace ImStudio
 {
