@@ -101,11 +101,13 @@ void MainWindowGUI(ImStudio::GUI & gui_r)
         // workspace-output
         gui.ot_P = ImVec2(0, gui.mb_S.y);
         gui.ot_S = ImVec2(w_w, w_h - gui.mb_S.y);
-        if (gui.wksp_output) gui.ShowOutputWorkspace();
+        if (gui.wksp_output_cpp) gui.ShowOutputWorkspace();
+        if (gui.wksp_output_lua) gui.ShowOutputWorkspaceLua();
     }
     else
     {
-        gui.wksp_output = true;
+        gui.wksp_output_cpp = true;
+        gui.wksp_output_lua = true;
             
         // create-sidebar
         gui.sb_P = ImVec2(0, gui.mb_S.y);
@@ -117,10 +119,15 @@ void MainWindowGUI(ImStudio::GUI & gui_r)
         gui.pt_S = ImVec2(300, w_h - gui.mb_S.y);
         if (gui.properties) gui.ShowProperties();
 
-        // workspace-output
+        // workspace-cpp output
         gui.ot_P = ImVec2(gui.sb_S.x, w_h - 300);
         gui.ot_S = ImVec2(gui.pt_P.x - gui.sb_S.x, 300);
-        if (gui.wksp_output) gui.ShowOutputWorkspace();
+        if (gui.wksp_output_cpp) gui.ShowOutputWorkspace();
+
+        // workspace-lua output
+        gui.ot_P = ImVec2(gui.sb_S.x, w_h - 300);
+        gui.ot_S = ImVec2(gui.pt_P.x - gui.sb_S.x, 300);
+        if (gui.wksp_output_lua) gui.ShowOutputWorkspaceLua();
 
         // create-viewport
         gui.vp_P = ImVec2(gui.sb_S.x, gui.mb_S.y);

@@ -46,6 +46,9 @@
     <ClCompile Include="src\utils\JsClipboardTricks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\sources\ims_generator_lua.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main_window.h">
@@ -70,6 +73,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\JsClipboardTricks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sources\ims_generator_lua.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

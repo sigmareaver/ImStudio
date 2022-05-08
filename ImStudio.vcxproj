@@ -144,6 +144,7 @@
     <ClCompile Include="src\main_window.cpp" />
     <ClCompile Include="src\sources\ims_buffer.cpp" />
     <ClCompile Include="src\sources\ims_generator.cpp" />
+    <ClCompile Include="src\sources\ims_generator_lua.cpp" />
     <ClCompile Include="src\sources\ims_gui.cpp" />
     <ClCompile Include="src\sources\ims_object.cpp" />
     <ClCompile Include="src\utils\HyperlinkHelper.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="src\main_window.h" />
     <ClInclude Include="src\sources\ims_buffer.h" />
     <ClInclude Include="src\sources\ims_generator.h" />
+    <ClInclude Include="src\sources\ims_generator_lua.h" />
     <ClInclude Include="src\sources\ims_gui.h" />
     <ClInclude Include="src\sources\ims_object.h" />
     <ClInclude Include="src\utils\HyperlinkHelper.h" />

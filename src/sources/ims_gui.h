@@ -8,6 +8,7 @@
 #include "sources/ims_object.h"
 #include "sources/ims_buffer.h"
 #include "sources/ims_generator.h"
+#include "sources/ims_generator_lua.h"
 
 #ifdef __EMSCRIPTEN__
 #include "JsClipboardTricks.h"
@@ -48,11 +49,17 @@ namespace ImStudio
         BufferWindow            bw;            
         void                    ShowViewport               ();         
 
-        bool                    wksp_output                = false;                // Workspace "Output"
+        bool                    wksp_output_cpp            = false;                // Workspace "Output"
         ImVec2                  ot_P                       = {};                   // Output Window Pos
         ImVec2                  ot_S                       = {};                   // Output Window Size
         std::string             output                     = {};
         void                    ShowOutputWorkspace();        
+
+        bool                    wksp_output_lua            = false;                // Workspace "Output"
+        //ImVec2                  ot_P                       = {};                   // Output Window Pos
+        //ImVec2                  ot_S                       = {};                   // Output Window Size
+        //std::string             output                     = {};
+        void                    ShowOutputWorkspaceLua();
 
         bool                    child_style                = false;                // Show Style Editor
         bool                    child_demo                 = false;                // Show Demo Window
