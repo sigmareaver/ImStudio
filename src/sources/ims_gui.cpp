@@ -16,6 +16,20 @@ void ImStudio::GUI::ShowMenubar()
         if (ImGui::BeginMenu("File"))
         {
             #ifndef __EMSCRIPTEN__
+            if (ImGui::MenuItem("New"))
+            {
+            }
+            if (ImGui::MenuItem("Load"))
+            {
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Save"))
+            {
+            }
+            if (ImGui::MenuItem("Save As.."))
+            {
+            }
+            ImGui::Separator();
             if (ImGui::MenuItem("Export to clipboard"))
             {
                 ImGui::LogToClipboard();

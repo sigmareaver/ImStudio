@@ -147,6 +147,7 @@
     <ClCompile Include="src\sources\ims_generator_lua.cpp" />
     <ClCompile Include="src\sources\ims_gui.cpp" />
     <ClCompile Include="src\sources\ims_object.cpp" />
+    <ClCompile Include="src\sources\ims_serializer.cpp" />
     <ClCompile Include="src\utils\HyperlinkHelper.cpp" />
     <ClCompile Include="src\utils\ims_utils.cpp" />
     <ClCompile Include="src\utils\JsClipboardTricks.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\sources\ims_generator_lua.h" />
     <ClInclude Include="src\sources\ims_gui.h" />
     <ClInclude Include="src\sources\ims_object.h" />
+    <ClInclude Include="src\sources\ims_serializer.h" />
     <ClInclude Include="src\utils\HyperlinkHelper.h" />
     <ClInclude Include="src\utils\ims_utils.h" />
     <ClInclude Include="src\utils\JsClipboardTricks.h" />

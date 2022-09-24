@@ -4,6 +4,7 @@
   "dependencies": [
     "fmt",
     "freetype",
-    "glfw3"
+    "glfw3",
+    "yaml-cpp"
   ]
 }
