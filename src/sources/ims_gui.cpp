@@ -1,4 +1,5 @@
 #include "ims_gui.h"
+#include "ims_serializer.h"
 
 // ANCHOR MENUBAR.DEFINITION
 void ImStudio::GUI::ShowMenubar()
@@ -25,6 +26,7 @@ void ImStudio::GUI::ShowMenubar()
             ImGui::Separator();
             if (ImGui::MenuItem("Save"))
             {
+                Serializer::SaveProject(*this);
             }
             if (ImGui::MenuItem("Save As.."))
             {
