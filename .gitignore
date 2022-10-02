@@ -27,3 +27,4 @@ cmake/wixpatch.xml
 Debug/
 Release/
 vcpkg_installed/
+test.gui

@@ -6,118 +6,232 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-int ImStudio::Serializer::SaveGUI(GUI& gui)
+namespace YAML {
+    template<>
+    struct convert<ImVec2> {
+        static Node encode(const ImVec2& rhs) {
+            Node node;
+            node.push_back(rhs.x);
+            node.push_back(rhs.y);
+            return node;
+        }
+
+        static bool decode(const Node& node, ImVec2& rhs) {
+            if (!node.IsSequence() || node.size() != 2) {
+                return false;
+            }
+
+            rhs.x = node[0].as<float>();
+            rhs.y = node[1].as<float>();
+            return true;
+        }
+    };
+
+    template<>
+    struct convert<ImRect> {
+        static Node encode(const ImRect& rhs) {
+            Node node;
+            node.push_back(rhs.Min);
+            node.push_back(rhs.Max);
+            return node;
+        }
+
+        static bool decode(const Node& node, ImRect& rhs) {
+            if (!node.IsSequence() || node.size() != 2) {
+                return false;
+            }
+
+            rhs.Min = node[0].as<ImVec2>();
+            rhs.Max = node[1].as<ImVec2>();
+            return true;
+        }
+    };
+}
+
+YAML::Emitter& operator<< (YAML::Emitter& out, const ImVec2& v)
 {
-    bool                    state = true;                 // Alive
-    bool                    compact = false;                // Compact/Spacious Switch
-    bool                    wksp_create = true;                 // Workspace "Create"
-    bool                    menubar = true;                 // Menubar State
-    ImVec2                  mb_P = {};                   // Menubar Pos
-    ImVec2                  mb_S = {};                   // Menubar Size
-    bool                    sidebar = true;                 // Sidebar State
-    ImVec2                  sb_P = {};                   // Sidebar Pos
-    ImVec2                  sb_S = {};                   // Sidebar Size
-    bool                    properties = true;                 // Properties State
-    ImVec2                  pt_P = {};                   // Properties Pos
-    ImVec2                  pt_S = {};                   // Properties Size
-    int                     allvecsize = 0;                    //
+    out << YAML::Flow << YAML::BeginSeq;
+    out << v.x;
+    out << v.y;
+    out << YAML::EndSeq;
+
+    return out;
+}
+
+YAML::Emitter& operator<< (YAML::Emitter& out, const ImRect& r)
+{
+    out << YAML::Flow << YAML::BeginSeq;
+    out << r.Min;
+    out << r.Max;
+    out << YAML::EndSeq;
+
+    return out;
+}
+
+int ImStudio::Serializer::SaveBaseObject(YAML::Emitter& out, ImStudio::BaseObject& obj)
+{
+    KEY(out, "ID", obj.id);
+    KEY(out, "Type", obj.type);
+    KEY(out, "Identifier", obj.identifier);
+    KEY(out, "State", obj.state);
+    KEY(out, "Pos", obj.pos);
+    KEY(out, "Size", obj.size);
+    KEY(out, "Width", obj.width);
+    KEY(out, "Init", obj.init);
+    KEY(out, "PropInit", obj.propinit);
+    KEY(out, "SelectInit", obj.selectinit);
+    KEY(out, "Locked", obj.locked);
+    KEY(out, "CenterH", obj.center_h);
+    KEY(out, "AutoResize", obj.autoresize);
+    KEY(out, "Animate", obj.animate);
+    KEY(out, "Label", obj.label);
+    KEY(out, "ValueS", obj.value_s);
+    KEY(out, "ValueB", obj.value_b);
+
+    Object* parent = nullptr;              //--
+    //int                     parentid                = 0;                  //  | For child objects and
+    if (obj.parent) // Apparently parent doesn't get initialized, needs done before further coding...
+        KEY(out, "ParentID", obj.parent->id);
+    else
+        KEY(out, "ParentID", 0);
+
+    KEY(out, "IsChild", obj.ischild);
+    KEY(out, "IsChildWidget", obj.ischildwidget);
+    KEY(out, "ItemCurrent", obj.item_current);
+
+    return 0;
+}
+
+int ImStudio::Serializer::SaveObject(YAML::Emitter& out, ImStudio::Object& obj)
+{
+    // BaseObject
+    SaveBaseObject(out, obj);
+
+    // ContainerChild
+    BEGIN_MAP(out, "ContainerChild");
+    auto& child = obj.child;
+    KEY(out, "ID", child.id);
+    KEY(out, "FreeRect", child.freerect);
+    KEY(out, "WindowRect", child.windowrect);
+    KEY(out, "Open", child.open);
+    KEY(out, "Locked", child.locked);
+    KEY(out, "Border", child.border);
+    KEY(out, "Init", child.init);
+    KEY(out, "Grab1ID", child.grab1_id);
+    KEY(out, "Grab2ID", child.grab2_id);
+    KEY(out, "Grab1", child.grab1);
+    KEY(out, "Grab2", child.grab2);
+    bool                    grabinit = false;                //--
+    KEY(out, "GrabInit", child.grabinit);
+
+    std::vector<BaseObject> objects = {};
+    BEGIN_BSEQ(out, "Objects");
+    for (auto& baseobj : child.objects)
+    {
+        SaveBaseObject(out, baseobj);
+    }
+    END_SEQ(out);
+
+    END_MAP(out);
+
+    return 0;
+}
+
+int ImStudio::Serializer::SaveBuffer(YAML::Emitter& out, ImStudio::BufferWindow& bw)
+{
+    KEY(out, "State", bw.state);
+    KEY(out, "Pos", bw.pos);
+    KEY(out, "Size", bw.size);
+    KEY(out, "IDVar", bw.idvar);
+
+    Object* current_child = nullptr;              //
+
+    KEY(out, "StaticLayout", bw.staticlayout);
+
+    BEGIN_BSEQ(out, "Objects");
+    for (Object& obj : bw.objects)
+    {
+        out << YAML::BeginMap;
+        SaveObject(out, obj);
+        out << YAML::EndMap;
+    }
+    END_SEQ(out);
+
+	return 0;
+}
+
+int ImStudio::Serializer::SaveGUI(YAML::Emitter& out, GUI& gui)
+{
+    KEY(out, "State", gui.state);
+    KEY(out, "Compact", gui.compact);
+    KEY(out, "WkspCreate", gui.wksp_create);
+    KEY(out, "Menubar", gui.menubar);
+    KEY(out, "MenubarPos", gui.mb_P);
+    KEY(out, "MenubarSize", gui.mb_S);
+    KEY(out, "Sidebar", gui.sidebar);
+    KEY(out, "SidebarPos", gui.sb_P);
+    KEY(out, "SidebarSize", gui.sb_S);
+    KEY(out, "Properties", gui.properties);
+    KEY(out, "PropertiesPos", gui.pt_P);
+    KEY(out, "PropertiesSize", gui.pt_S);
+    KEY(out, "AllVecSize", gui.allvecsize);
+
     int                     selectid = 0;                    // Selected object (VP)
+    KEY(out, "SelectID", gui.selectid);
     int                     previd = 0;                    // Previous object
+    KEY(out, "PrevID", gui.previd);
     BaseObject* selectobj = nullptr;              // Pointer to access
-    int                     selectproparray = 0;                    // Selected from prop array
-    bool                    viewport = true;                 // Viewport State
-    ImVec2                  vp_P = {};                   // Viewport Pos
-    ImVec2                  vp_S = {};                   // Viewport Size
-    BufferWindow            bw;
-    bool                    wksp_output_cpp = false;                // Workspace "Output"
-    ImVec2                  ot_P = {};                   // Output Window Pos
-    ImVec2                  ot_S = {};                   // Output Window Size
+
+    KEY(out, "SelectPropArray", gui.selectproparray);
+    KEY(out, "Viewport", gui.viewport);
+    KEY(out, "ViewportPos", gui.vp_P);
+    KEY(out, "ViewportSize", gui.vp_S);
+
+    BEGIN_MAP(out, "BufferWindow");
+    SaveBuffer(out, gui.bw);
+    END_MAP(out);
+
+    KEY(out, "WkspOutputCPP", gui.wksp_output_cpp);
+    KEY(out, "OutputPos", gui.ot_P);
+    KEY(out, "OutputSize", gui.ot_S);
+
     std::string             output = {};
-    bool                    wksp_output_lua = false;                // Workspace "Output"
-    bool                    child_style = false;                // Show Style Editor
-    bool                    child_demo = false;                // Show Demo Window
-    bool                    child_metrics = false;                // Show Metrics Window
-    bool                    child_color = false;                // Show Color Export
-    bool                    child_stack = false;                // Show Stack Tool
-    bool                    child_resources = false;                // Show Help Resources
-    bool                    child_about = false;                // Show About Window
+
+    KEY(out, "WkspOutputLua", gui.wksp_output_lua);
+    KEY(out, "ChildStyle", gui.child_style);
+    KEY(out, "ChildDemo", gui.child_demo);
+    KEY(out, "ChildMetrics", gui.child_metrics);
+    KEY(out, "ChildColor", gui.child_color);
+    KEY(out, "ChildStack", gui.child_stack);
+    KEY(out, "ChildResources", gui.child_resources);
+    KEY(out, "ChildAbout", gui.child_about);
+
     std::string             filename;
     std::string             path;
 
-	return 0;
-}
-
-int ImStudio::Serializer::SaveBuffer(ImStudio::BufferWindow& bw)
-{
-    bool                    state = false;                //
-    ImVec2                  size = {};                   //
-    ImVec2                  pos = {};                   //
-    int                     idvar = 0;                    //
-    Object* current_child = nullptr;              //
-    bool                    staticlayout = false;                //
-    std::vector<Object>     objects = {};                   //
-
-	// Iterate children
-	// SaveObject(child)
-
-	return 0;
-}
-
-int ImStudio::Serializer::SaveObject(ImStudio::Object& obj)
-{
-    // BaseObject
-    int                     id = 0;                    // Unique ID
-    std::string             type = {};                   // Widget type
-    std::string             identifier = {};                   // type+id
-    bool                    state = true;                 // Alive
-    ImVec2                  pos = ImVec2(100, 100);     //--
-    ImVec2                  size = {};                   //  | Widget vectors
-    float                   width = 200;                  //--
-    bool                    init = false;                //--
-    bool                    propinit = false;                //  | Initialised
-    bool                    selectinit = true;                 //--
-    bool                    locked = false;                //--
-    bool                    center_h = false;                //  | Properties
-    bool                    autoresize = true;                 //  |
-    bool                    animate = true;                 //--
-    std::string             label = "Label";              //--
-    std::string             value_s = {};                   //  | Widget values/contents
-    bool                    value_b = false;                //--
-    Object* parent = nullptr;              //--
-    //int                     parentid                = 0;                  //  | For child objects and
-    bool                    ischild = false;                //  | child widgets
-    bool                    ischildwidget = false;                //--
-    int                     item_current = 0;                    //
-
-    // ContainerChild
-    int                     id = 0;                    // Unique ID
-    ImRect                  freerect = {};                   // Buffer rect ctrld by grabs
-    ImRect                  windowrect = {};                   // Window dimensions for highlighting
-    bool                    open = true;                 //--
-    bool                    locked = false;                //  | Properties
-    bool                    border = true;                 //  |
-    bool                    init = false;                //--
-    int                     grab1_id = 0;                    //--
-    int                     grab2_id = 0;                    //  | ugly
-    ImVec2                  grab1 = ImVec2(90, 90);       //  | storage
-    ImVec2                  grab2 = ImVec2(200, 200);     //  | stuff
-    bool                    grabinit = false;                //--
-    std::vector<BaseObject> objects = {};
-
-	return 0;
+    return 0;
 }
 
 int ImStudio::Serializer::SaveProject(GUI& gui)
 {
-	std::string path = gui.path + gui.filename;
+	//std::string path = gui.path + gui.filename;
+    std::string path = "test.gui"; // Test save
 	std::ofstream fp(path);
 
 	// Add file error handling
+    if (!fp.good())
+    {
+        return -1;
+    }
 
 	YAML::Emitter out;
 
 	// SaveGUI()
-	// SaveChildren()
+    out << YAML::BeginMap;
+    SaveGUI(out, gui);
+    out << YAML::EndMap;
+
+    fp << out.c_str();
 
 	return 0;
 }

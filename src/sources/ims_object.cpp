@@ -7,6 +7,7 @@ ImStudio::BaseObject::BaseObject(int idvar_, std::string type_, int parent_id_) 
     type          = type_;
     identifier    = "child" + std::to_string(parent_id_) + "::" + type_ + std::to_string(idvar_);
     value_s       = type_ + std::to_string(idvar_);
+    parent = nullptr;
 }
 
 ImStudio::Object::Object(int idvar_, std::string type_) : BaseObject()
