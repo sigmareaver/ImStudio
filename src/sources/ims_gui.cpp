@@ -401,13 +401,15 @@ void ImStudio::GUI::ShowProperties()
             {
                 //SECTION CREATE PROPARRAY
                 allvecsize = 0;
-                for (Object &o : bw.objects) // Calc total objects created in all vectors [bw.objects+all(child.objects)]
+                for (auto &ptr : bw.objects) // Calc total objects created in all vectors [bw.objects+all(child.objects)]
                 {
+                    auto& o = *ptr;
                     allvecsize++;
                     if (!o.child.objects.empty())
                     {
-                        for (BaseObject &cw : o.child.objects)
+                        for (auto &cptr : o.child.objects)
                         {
+                            auto& cw = *cptr;
                             (void)cw;//for compiler warning
                             allvecsize++;
                         }
@@ -417,8 +419,9 @@ void ImStudio::GUI::ShowProperties()
                 std::vector<const char*> items; // contains identifiers ex: child1::button2
                 std::vector<int>         idarr; // contains id associated with ^
                 int         i = 0;
-                for (Object &o : bw.objects) // Fill both arrays with contents from bw.objects [Object]
+                for (auto &ptr : bw.objects) // Fill both arrays with contents from bw.objects [Object]
                 {
+                    auto& o = *ptr;
                     char* identifier = const_cast<char *>(o.identifier.c_str());
                     items.push_back(identifier);
                     idarr.push_back(o.id);
@@ -439,13 +442,15 @@ void ImStudio::GUI::ShowProperties()
                     }
                     i++;
                 }
-                for (Object &o : bw.objects) // cpy-grp
+                for (auto &ptr : bw.objects) // cpy-grp
                 {
+                    auto& o = *ptr;
                     if (!o.child.objects.empty())
                     {
-                        for (BaseObject &cw :
+                        for (auto &cptr :
                              o.child.objects) // Fill both arrays with contents from child.objects [BaseObject]
                         {
+                            auto& cw = *cptr;
                             char* identifier = const_cast<char *>(cw.identifier.c_str());
                             items.push_back(identifier);
                             idarr.push_back(cw.id);

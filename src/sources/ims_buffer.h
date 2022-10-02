@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "imgui_docking/imgui.h"
 
@@ -21,7 +22,7 @@ namespace ImStudio
     
       bool                    staticlayout            = false;                //
     
-      std::vector<Object>     objects                 = {};                   //
+      std::vector<std::unique_ptr<Object>>     objects                 = {};                   //
   
       void                    drawall                 (int *select);
       Object *                getobj                  (int id);

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "imgui_docking/imgui.h"
 #include "imgui_docking/imgui_stdlib.h"
@@ -76,7 +77,7 @@ namespace ImStudio
       ImVec2                  grab2                   = ImVec2(200, 200);     //  | stuff
       bool                    grabinit                = false;                //--
       
-      std::vector<BaseObject> objects                 = {};
+      std::vector<std::unique_ptr<BaseObject>> objects                 = {};
       void drawall            (int *select,           bool staticlayout);  
   };
   

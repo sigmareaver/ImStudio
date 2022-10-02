@@ -20,7 +20,7 @@ void ImStudio::BufferWindow::drawall(int *select)
         {
             for (auto i = objects.begin(); i != objects.end(); ++i)
             {
-                Object &o = *i;
+                Object &o = **i;
 
                 if (o.state == false)
                 {
@@ -53,8 +53,9 @@ void ImStudio::BufferWindow::drawall(int *select)
 
 ImStudio::Object *ImStudio::BufferWindow::getobj(int id)
 {
-    for (Object &o : objects)
+    for (auto &ptr : objects)
     {
+        auto& o = *ptr;
         if (o.id == id)
         {
             return &o;
@@ -65,16 +66,18 @@ ImStudio::Object *ImStudio::BufferWindow::getobj(int id)
 
 ImStudio::BaseObject *ImStudio::BufferWindow::getbaseobj(int id)
 {
-    for (Object &o : objects)
+    for (auto &ptr : objects)
     {
+        auto& o = *ptr;
         if (o.id == id)
         {
             return &o;
         }
         if (!o.child.objects.empty())
         {
-            for (BaseObject &cw : o.child.objects)
+            for (auto &cptr : o.child.objects)
             {
+                auto& cw = *cptr;
                 if (cw.id == id)
                 {
                     return &cw;
@@ -90,21 +93,30 @@ void ImStudio::BufferWindow::create(std::string type_)
     idvar++;
     if (!current_child)
     {
-        Object widget(idvar, type_);
-        objects.push_back(widget);
+        //Object widget(idvar, type_);
+        //objects.push_back(widget);
+        //objects.emplace_back(std::move(Object(idvar, type_)));
+        auto widget = std::make_unique<Object>(idvar, type_);
+        objects.push_back(std::move(widget));
     }
     else
     {
         if (!current_child->child.open)
         {
-            Object widget(idvar, type_);
-            objects.push_back(widget);
+            //Object widget(idvar, type_);
+            //objects.push_back(widget);
+            //objects.emplace_back(std::move(Object(idvar, type_)));
+            auto widget = std::make_unique<Object>(idvar, type_);
+            objects.push_back(std::move(widget));
         }
         else
         {
-            BaseObject childwidget(idvar, type_, current_child->id);
-            childwidget.parent = current_child;
-            current_child->child.objects.push_back(childwidget);
+            //BaseObject childwidget(idvar, type_, current_child->id);
+            //childwidget.parent = current_child;
+            //current_child->child.objects.push_back(childwidget);
+            auto childwidget = std::make_unique<BaseObject>(idvar, type_, current_child->id);
+            (*childwidget).parent = current_child;
+            current_child->child.objects.push_back(std::move(childwidget));
         }
     }
 }

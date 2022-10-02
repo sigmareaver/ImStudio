@@ -375,7 +375,7 @@ void ImStudio::GenerateCodeLua(std::string* output, BufferWindow* bw)
     *output += "if (window = ImGui.Begin(\"window_name\", window)) then\n\n";
     for (auto i = bw->objects.begin(); i != bw->objects.end(); ++i)
     {
-        Object& o = *i;
+        Object& o = **i;
 
         if (o.type != "child")
         {
@@ -389,7 +389,7 @@ void ImStudio::GenerateCodeLua(std::string* output, BufferWindow* bw)
             *output += fmt::format("\tImGui.BeginChild({}, {}, {}, {})\n\n", o.child.id, o.child.freerect.GetSize().x, o.child.freerect.GetSize().y, o.child.border);
             for (auto i = o.child.objects.begin(); i != o.child.objects.end(); ++i)
             {
-                BaseObject& cw = *i;// child widget
+                BaseObject& cw = **i;// child widget
 
                 RecreateLua(cw, output, bw->staticlayout);
 

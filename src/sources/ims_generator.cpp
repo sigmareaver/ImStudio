@@ -354,7 +354,7 @@ void ImStudio::GenerateCode(std::string* output, BufferWindow* bw)
     *output += "if (ImGui::Begin(\"window_name\", &window))\n{\n\n";
     for (auto i = bw->objects.begin(); i != bw->objects.end(); ++i)
     {
-        Object &o = *i;
+        Object &o = **i;
 
         if (o.type != "child")
         {
@@ -368,7 +368,7 @@ void ImStudio::GenerateCode(std::string* output, BufferWindow* bw)
             *output += fmt::format("\tImGui::BeginChild({}, ImVec2({},{}), {});\n\n", o.child.id, o.child.freerect.GetSize().x, o.child.freerect.GetSize().y, o.child.border);
             for (auto i = o.child.objects.begin(); i != o.child.objects.end(); ++i)
             {
-                BaseObject &cw = *i;// child widget
+                BaseObject &cw = **i;// child widget
 
                 Recreate(cw, output, bw->staticlayout);
 

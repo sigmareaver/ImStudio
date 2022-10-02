@@ -126,9 +126,10 @@ int ImStudio::Serializer::SaveObject(YAML::Emitter& out, ImStudio::Object& obj)
 
     std::vector<BaseObject> objects = {};
     BEGIN_BSEQ(out, "Objects");
-    for (auto& baseobj : child.objects)
+    for (auto& cptr : child.objects)
     {
-        SaveBaseObject(out, baseobj);
+        auto& cw = *cptr;
+        SaveBaseObject(out, cw);
     }
     END_SEQ(out);
 
@@ -149,10 +150,11 @@ int ImStudio::Serializer::SaveBuffer(YAML::Emitter& out, ImStudio::BufferWindow&
     KEY(out, "StaticLayout", bw.staticlayout);
 
     BEGIN_BSEQ(out, "Objects");
-    for (Object& obj : bw.objects)
+    for (auto& ptr : bw.objects)
     {
+        auto& o = *ptr;
         out << YAML::BeginMap;
-        SaveObject(out, obj);
+        SaveObject(out, o);
         out << YAML::EndMap;
     }
     END_SEQ(out);
