@@ -2,6 +2,7 @@
   "name": "imstudio",
   "version-string": "1.0.0",
   "dependencies": [
+    "dirent",
     "fmt",
     "freetype",
     "glfw3",

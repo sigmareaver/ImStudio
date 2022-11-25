@@ -157,6 +157,7 @@
     <ClCompile Include="src\utils\HyperlinkHelper.cpp" />
     <ClCompile Include="src\utils\ims_utils.cpp" />
     <ClCompile Include="src\utils\JsClipboardTricks.cpp" />
+    <ClCompile Include="Vendor\ImGuiFileDialog\ImGuiFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main_window.h" />
@@ -169,6 +170,8 @@
     <ClInclude Include="src\utils\HyperlinkHelper.h" />
     <ClInclude Include="src\utils\ims_utils.h" />
     <ClInclude Include="src\utils\JsClipboardTricks.h" />
+    <ClInclude Include="Vendor\ImGuiFileDialog\ImGuiFileDialog.h" />
+    <ClInclude Include="Vendor\ImGuiFileDialog\ImGuiFileDialogConfig.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
