@@ -74,7 +74,7 @@ namespace ImStudio
       ImVec2                  grab2                   = ImVec2(200, 200);     //  | stuff
       bool                    grabinit                = false;                //--
       
-      std::vector<std::unique_ptr<BaseObject>> objects                 = {};
+      std::vector<BaseObject> objects                 = {};
       void drawall            (int *select,           bool staticlayout);  
   };
   

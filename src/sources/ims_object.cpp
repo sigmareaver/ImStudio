@@ -21,7 +21,6 @@ ImStudio::Object::Object(int idgen_, std::string type_) : BaseObject()
     type       = type_;
     identifier = type_ + std::to_string(idgen_);
     value_s    = type_ + std::to_string(idgen_);
-    parent     = this;
 }
 
 //void ImStudio::BaseObject::draw(int *select, bool staticlayout = false)
@@ -67,7 +66,7 @@ void ImStudio::ContainerChild::drawall(int *select, bool staticlayout)
                       ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus);
     for (auto i = objects.begin(); i != objects.end(); ++i)
     {
-        BaseObject &o = **i;
+        BaseObject &o = *i;
         if (o.state == false)
         {
             i = objects.erase(i);

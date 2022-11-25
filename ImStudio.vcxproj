@@ -146,7 +146,13 @@
     <ClCompile Include="src\sources\ims_generator.cpp" />
     <ClCompile Include="src\sources\ims_generator_lua.cpp" />
     <ClCompile Include="src\sources\ims_gui.cpp" />
+    <ClCompile Include="src\sources\ims_gui_menubar.cpp" />
+    <ClCompile Include="src\sources\ims_gui_output.cpp" />
+    <ClCompile Include="src\sources\ims_gui_properties.cpp" />
+    <ClCompile Include="src\sources\ims_gui_sidebar.cpp" />
+    <ClCompile Include="src\sources\ims_gui_viewport.cpp" />
     <ClCompile Include="src\sources\ims_object.cpp" />
+    <ClCompile Include="src\sources\ims_object_draw.cpp" />
     <ClCompile Include="src\sources\ims_serializer.cpp" />
     <ClCompile Include="src\utils\HyperlinkHelper.cpp" />
     <ClCompile Include="src\utils\ims_utils.cpp" />

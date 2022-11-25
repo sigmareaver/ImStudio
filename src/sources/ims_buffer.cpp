@@ -109,7 +109,7 @@ void ImStudio::BufferWindow::drawall()
 
             for (auto i = objects.begin(); i != objects.end(); ++i)
             {
-                Object &o = **i;
+                Object &o = *i;
 
                 if (o.state == false)
                 {
@@ -136,9 +136,8 @@ void ImStudio::BufferWindow::drawall()
 
 ImStudio::Object *ImStudio::BufferWindow::getobj(int id)
 {
-    for (auto &ptr : objects)
+    for (auto &o : objects)
     {
-        auto& o = *ptr;
         if (o.id == id)
         {
             return &o;
@@ -149,18 +148,16 @@ ImStudio::Object *ImStudio::BufferWindow::getobj(int id)
 
 ImStudio::BaseObject *ImStudio::BufferWindow::getbaseobj(int id)
 {
-    for (auto &ptr : objects)
+    for (auto &o : objects)
     {
-        auto& o = *ptr;
         if (o.id == id)
         {
             return &o;
         }
         if (!o.child.objects.empty())
         {
-            for (auto &cptr : o.child.objects)
+            for (auto &cw : o.child.objects)
             {
-                auto& cw = *cptr;
                 if (cw.id == id)
                 {
                     return &cw;

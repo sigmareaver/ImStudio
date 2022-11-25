@@ -79,7 +79,7 @@ int ImStudio::Serializer::SaveBaseObject(YAML::Emitter& out, ImStudio::BaseObjec
     KEY(out, "Width", obj.width);
     KEY(out, "Init", obj.init);
     KEY(out, "PropInit", obj.propinit);
-    KEY(out, "SelectInit", obj.selectinit);
+    KEY(out, "Initial_Selection", obj.initial_selection);
     KEY(out, "Locked", obj.locked);
     KEY(out, "CenterH", obj.center_h);
     KEY(out, "AutoResize", obj.autoresize);
@@ -88,14 +88,14 @@ int ImStudio::Serializer::SaveBaseObject(YAML::Emitter& out, ImStudio::BaseObjec
     KEY(out, "ValueS", obj.value_s);
     KEY(out, "ValueB", obj.value_b);
 
-    Object* parent = nullptr;              //--
-    //int                     parentid                = 0;                  //  | For child objects and
-    if (obj.parent) // Apparently parent doesn't get initialized, needs done before further coding...
-        KEY(out, "ParentID", obj.parent->id);
-    else
-        KEY(out, "ParentID", 0);
+    //Object* parent = nullptr;              //--
+    ////int                     parentid                = 0;                  //  | For child objects and
+    //if (obj.parent) // Apparently parent doesn't get initialized, needs done before further coding...
+    //    KEY(out, "ParentID", obj.parent->id);
+    //else
+    //    KEY(out, "ParentID", 0);
 
-    KEY(out, "IsChild", obj.ischild);
+    //KEY(out, "IsChild", obj.ischild);
     KEY(out, "IsChildWidget", obj.ischildwidget);
     KEY(out, "ItemCurrent", obj.item_current);
 
@@ -126,9 +126,8 @@ int ImStudio::Serializer::SaveObject(YAML::Emitter& out, ImStudio::Object& obj)
 
     std::vector<BaseObject> objects = {};
     BEGIN_BSEQ(out, "Objects");
-    for (auto& cptr : child.objects)
+    for (auto& cw : child.objects)
     {
-        auto& cw = *cptr;
         SaveBaseObject(out, cw);
     }
     END_SEQ(out);
@@ -143,16 +142,15 @@ int ImStudio::Serializer::SaveBuffer(YAML::Emitter& out, ImStudio::BufferWindow&
     KEY(out, "State", bw.state);
     KEY(out, "Pos", bw.pos);
     KEY(out, "Size", bw.size);
-    KEY(out, "IDVar", bw.idvar);
+    KEY(out, "IDGen", bw.idgen);
 
     Object* current_child = nullptr;              //
 
     KEY(out, "StaticLayout", bw.staticlayout);
 
     BEGIN_BSEQ(out, "Objects");
-    for (auto& ptr : bw.objects)
+    for (auto& o : bw.objects)
     {
-        auto& o = *ptr;
         out << YAML::BeginMap;
         SaveObject(out, o);
         out << YAML::EndMap;
@@ -176,15 +174,7 @@ int ImStudio::Serializer::SaveGUI(YAML::Emitter& out, GUI& gui)
     KEY(out, "Properties", gui.properties);
     KEY(out, "PropertiesPos", gui.pt_P);
     KEY(out, "PropertiesSize", gui.pt_S);
-    KEY(out, "AllVecSize", gui.allvecsize);
 
-    int                     selectid = 0;                    // Selected object (VP)
-    KEY(out, "SelectID", gui.selectid);
-    int                     previd = 0;                    // Previous object
-    KEY(out, "PrevID", gui.previd);
-    BaseObject* selectobj = nullptr;              // Pointer to access
-
-    KEY(out, "SelectPropArray", gui.selectproparray);
     KEY(out, "Viewport", gui.viewport);
     KEY(out, "ViewportPos", gui.vp_P);
     KEY(out, "ViewportSize", gui.vp_S);
@@ -219,6 +209,11 @@ int ImStudio::Serializer::SaveProject(GUI& gui)
 	//std::string path = gui.path + gui.filename;
     std::string path = "test.gui"; // Test save
 	std::ofstream fp(path);
+    if (gui.filename.length() == 0)
+    {
+        //return SaveProjectAs(gui);
+        return -1;
+    }
 
 	// Add file error handling
     if (!fp.good())

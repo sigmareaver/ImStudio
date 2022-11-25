@@ -1,4 +1,6 @@
 #include "ims_gui.h"
+#include "ims_serializer.h"
+
 
 void ImStudio::GUI::ShowMenubar()
 {
@@ -15,6 +17,21 @@ void ImStudio::GUI::ShowMenubar()
         if (ImGui::BeginMenu("File"))
         {
 #ifndef __EMSCRIPTEN__
+            if (ImGui::MenuItem("New"))
+            {
+            }
+            if (ImGui::MenuItem("Load"))
+            {
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Save"))
+            {
+                Serializer::SaveProject(*this);
+            }
+            if (ImGui::MenuItem("Save As.."))
+            {
+            }
+            ImGui::Separator();
             if (ImGui::MenuItem("Export to clipboard"))
             {
                 ImGui::LogToClipboard();
@@ -87,16 +104,27 @@ void ImStudio::GUI::ShowMenubar()
             // tab-create
             if (ImGui::BeginTabItem("Create"))
             {
-                wksp_output = false;
                 wksp_create = true;
+                wksp_output_cpp = false;
+                wksp_output_lua = false;
                 ImGui::EndTabItem();
             }
 
             // tab-output
-            if (ImGui::BeginTabItem("Output"))
+            if (ImGui::BeginTabItem("C++ Output"))
             {
                 wksp_create = false;
-                wksp_output = true;
+                wksp_output_cpp = true;
+                wksp_output_lua = false;
+                ImGui::EndTabItem();
+            }
+
+            // tab-lua output
+            if (ImGui::BeginTabItem("Lua Output"))
+            {
+                wksp_create = false;
+                wksp_output_cpp = false;
+                wksp_output_lua = true;
                 ImGui::EndTabItem();
             }
 

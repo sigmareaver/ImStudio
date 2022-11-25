@@ -24,7 +24,7 @@ namespace ImStudio
     
       bool                    staticlayout            = false;                //
     
-      std::vector<std::unique_ptr<Object>>     objects                 = {};                   //
+      std::vector<Object>     objects                 = {};                   //
   
       void                    drawall                 ();
       Object *                getobj                  (int id);
