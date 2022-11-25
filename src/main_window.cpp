@@ -165,6 +165,21 @@ void MainWindowGUI(ImStudio::GUI & gui_r)
             // close
             ImGuiFileDialog::Instance()->Close();
         }
+        // Load File Dialog
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+        if (ImGuiFileDialog::Instance()->Display("LoadFileDlg", ImGuiWindowFlags_NoCollapse, { 100.0f, 100.0f }, { 600.0f, 400.0f }))
+        {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk())
+            {
+                gui.path = ImGuiFileDialog::Instance()->GetCurrentPath();
+                gui.filename = ImGuiFileDialog::Instance()->GetCurrentFileName();
+                ImStudio::Serializer::LoadProject(gui);
+            }
+
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
     }
 
 }

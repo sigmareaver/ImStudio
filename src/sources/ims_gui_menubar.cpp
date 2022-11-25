@@ -18,9 +18,21 @@ void ImStudio::GUI::ShowMenubar()
 #ifndef __EMSCRIPTEN__
             if (ImGui::MenuItem("New"))
             {
+                filename.clear();
+                path.clear();
+                bw.state = true;
+                bw.size = {};
+                bw.pos = {};
+                bw.idgen = 0;
+                bw.open_child = false;
+                bw.open_child_id = -1;
+                bw.selected_obj_id = -1;
+                bw.staticlayout = false;
+                bw.objects.clear();
             }
             if (ImGui::MenuItem("Load"))
             {
+                Serializer::LoadProjectDlg();
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Save As.."))

@@ -20,12 +20,20 @@ namespace ImStudio
 
 	class Serializer
 	{
-	public:
+	private:
 		static int SaveBaseObject(YAML::Emitter& out, BaseObject& obj);
 		static int SaveObject(YAML::Emitter& out, Object& obj);
 		static int SaveBuffer(YAML::Emitter& out, BufferWindow& bw);
 		static int SaveGUI(YAML::Emitter& out, GUI& gui);
+
+		static int LoadBaseObject(YAML::detail::iterator_value& it, Object& obj);
+		static int LoadObject(YAML::detail::iterator_value& it, Object& obj);
+		static int LoadBuffer(YAML::Node& node, ImStudio::BufferWindow& bw);
+		static int LoadGUI(YAML::Node& node, GUI& gui);
+	public:
 		static int SaveProjectAs(GUI& gui);
 		static int SaveProject(GUI& gui);
+		static int LoadProjectDlg();
+		static int LoadProject(GUI& gui);
 	};
 }
