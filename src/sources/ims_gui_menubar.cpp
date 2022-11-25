@@ -1,7 +1,6 @@
 #include "ims_gui.h"
 #include "ims_serializer.h"
 
-
 void ImStudio::GUI::ShowMenubar()
 {
     ImGui::SetNextWindowPos(mb_P);
@@ -24,12 +23,13 @@ void ImStudio::GUI::ShowMenubar()
             {
             }
             ImGui::Separator();
+            if (ImGui::MenuItem("Save As.."))
+            {
+                Serializer::SaveProjectAs(*this);
+            }
             if (ImGui::MenuItem("Save"))
             {
                 Serializer::SaveProject(*this);
-            }
-            if (ImGui::MenuItem("Save As.."))
-            {
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Export to clipboard"))

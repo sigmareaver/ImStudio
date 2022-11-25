@@ -149,6 +149,22 @@ void MainWindowGUI(ImStudio::GUI & gui_r)
         if (gui.child_resources) utils::ShowResourcesWindow(&gui.child_resources);
 
         if (gui.child_about) utils::ShowAboutWindow(&gui.child_about);
+
+        // Save As File Dialog
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+        if (ImGuiFileDialog::Instance()->Display("SaveAsDlg", ImGuiWindowFlags_NoCollapse, { 100.0f, 100.0f }, { 600.0f, 400.0f }))
+        {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk())
+            {
+                gui.path = ImGuiFileDialog::Instance()->GetCurrentPath();
+                gui.filename = ImGuiFileDialog::Instance()->GetCurrentFileName();
+                ImStudio::Serializer::SaveProject(gui);
+            }
+
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
     }
 
 }

@@ -25,6 +25,7 @@ namespace ImStudio
 		static int SaveObject(YAML::Emitter& out, Object& obj);
 		static int SaveBuffer(YAML::Emitter& out, BufferWindow& bw);
 		static int SaveGUI(YAML::Emitter& out, GUI& gui);
+		static int SaveProjectAs(GUI& gui);
 		static int SaveProject(GUI& gui);
 	};
 }

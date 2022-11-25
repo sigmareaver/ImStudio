@@ -6,6 +6,8 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
+#include "ImGuiFileDialog/ImGuiFileDialog.h"
+
 namespace YAML {
     template<>
     struct convert<ImVec2> {
@@ -204,16 +206,21 @@ int ImStudio::Serializer::SaveGUI(YAML::Emitter& out, GUI& gui)
     return 0;
 }
 
+int ImStudio::Serializer::SaveProjectAs(GUI& gui)
+{
+    ImGuiFileDialog::Instance()->OpenDialog("SaveAsDlg", "Save As", ".gui", ".", 1, nullptr, ImGuiFileDialogFlags_ConfirmOverwrite);
+    return 0;
+}
+
 int ImStudio::Serializer::SaveProject(GUI& gui)
 {
-	//std::string path = gui.path + gui.filename;
-    std::string path = "test.gui"; // Test save
-	std::ofstream fp(path);
     if (gui.filename.length() == 0)
     {
-        //return SaveProjectAs(gui);
+        SaveProjectAs(gui);
         return -1;
     }
+    std::string path = gui.path + "\\" + gui.filename;
+    std::ofstream fp(path);
 
 	// Add file error handling
     if (!fp.good())
