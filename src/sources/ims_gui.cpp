@@ -1,3 +1,5 @@
+#if 0
+
 #include "ims_gui.h"
 #include "ims_serializer.h"
 
@@ -1367,3 +1369,5 @@ void ImStudio::GUI::ShowOutputWorkspaceLua()
     }
     ImGui::End();
 }
+
+#endif // 0

@@ -14,20 +14,22 @@ namespace ImStudio
   class BufferWindow
   {
     public:
-      bool                    state                   = false;                //
+      bool                    state                   = true;                //
       ImVec2                  size                    = {};                   //
       ImVec2                  pos                     = {};                   //
-      int                     idvar                   = 0;                    //
-      Object*                 current_child           = nullptr;              //
+      int                     idgen                   = 0;                    //
+      bool                    open_child = false;                //
+      int                     open_child_id = -1;                   //
+      int                     selected_obj_id = -1;                   //
     
       bool                    staticlayout            = false;                //
     
       std::vector<std::unique_ptr<Object>>     objects                 = {};                   //
   
-      void                    drawall                 (int *select);
+      void                    drawall                 ();
       Object *                getobj                  (int id);
       BaseObject *            getbaseobj              (int id);
-      void                    create                  (std::string type_);
+      void                    create                  (std::string type_, bool atcursor = false);
   };
 
 }
