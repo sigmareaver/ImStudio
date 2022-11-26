@@ -1,7 +1,8 @@
 ***This fork of ImStudio is for use in my projects and may not suite your needs, but you're free to use it per the original license.***
 
-### Primary Planned feature:
+### Primary Features in this fork:
 - Export GUI designs as Lua code (based on my version of sol2_ImGui_Bindings).
+- Saving and loading of projects (serialization via YAML).
 
 
 # ImStudio
